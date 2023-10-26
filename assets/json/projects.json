@@ -1,0 +1,19 @@
+[
+    {
+        "name": "eTally",
+        "title": "E-Tally: Event Organizer and Scoring Tabulation",
+        "description": "A web application for event organization and scoring tabulation.",
+        "technologies": ["HTML, CSS, JavaScript"],
+        "github": "https://github.com/yourusername/project1",
+        "demo": "https://yourproject1demo.com",
+        "images": {
+            "folder": "etally",
+            "main": "1_etally.png",
+            "cover": "1_etally_cover.png",
+            "details": [
+                "1_etally.png",
+                "1_etally_cover.png"
+            ]
+        }
+    }
+]
