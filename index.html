@@ -27,13 +27,6 @@
   <!-- Template Main CSS File -->
   <link href="assets/css/style.css" rel="stylesheet">
 
-  <!-- =======================================================
-  * Template Name: iPortfolio
-  * Updated: Sep 18 2023 with Bootstrap v5.3.2
-  * Template URL: https://bootstrapmade.com/iportfolio-bootstrap-portfolio-websites-template/
-  * Author: BootstrapMade.com
-  * License: https://bootstrapmade.com/license/
-  ======================================================== -->
 </head>
 
 <body>
@@ -210,7 +203,9 @@
 
         <div class="section-title">
           <h2>Resume</h2>
-          <button class="btn btn-primary"><span class="bi bi-download"></span> Download Resume</button>
+          <a href="assets/resume/FullstackDeveloper.pdf" download>
+            <button class="btn btn-primary"><span class="bi bi-download"></span> Download Resume</button>
+          </a>
         </div>
 
         <div class="row">
@@ -276,7 +271,7 @@
 
         <div class="section-title">
           <h2>Portfolio</h2>
-          <p>Magnam dolores commodi suscipit. Necessitatibus eius consequatur ex aliquid fuga eum quidem. Sit sint consectetur velit. Quisquam quos quisquam cupiditate. Et nemo qui impedit suscipit alias ea. Quia fugiat sit in iste officiis commodi quidem hic quas.</p>
+          <p>In my role as a Software Developer, I've crafted a wide array of web applications and software solutions for clients across diverse sectors such as agriculture, pharmaceuticals, farming, and beyond.</p>
         </div>
 
         <div class="row" data-aos="fade-up">
@@ -284,31 +279,11 @@
             <ul id="portfolio-flters">
               <li data-filter="*" class="filter-active">All</li>
               <li data-filter=".filter-app">App</li>
-              <li data-filter=".filter-card">Card</li>
               <li data-filter=".filter-web">Web</li>
             </ul>
           </div>
         </div>
-
         <div class="row portfolio-container" data-aos="fade-up" data-aos-delay="100">
-          <div class="col-lg-4 col-md-6 portfolio-item filter-web">
-            <div class="portfolio-wrap">
-              <img src="assets/img/portfolio/1_etally.png" class="img-fluid" alt="">
-              <div class="portfolio-links">
-                <a href="assets/img/portfolio/1_etally_cover.png" data-gallery="portfolioGallery" class="portfolio-lightbox" title="E-Tally: Event Organizer and Scoring Tabulation"><i class="bx bx-plus"></i></a>
-                <a href="portfolio-details.html" title="More Details"><i class="bx bx-link"></i></a>
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-4 col-md-6 portfolio-item filter-web">
-            <div class="portfolio-wrap">
-              <img src="assets/img/portfolio/2_atjmai.png" class="img-fluid" alt="">
-              <div class="portfolio-links">
-                <a href="assets/img/portfolio/2_atjmai.png" data-gallery="portfolioGallery" class="portfolio-lightbox" title="Alumni Tracker with Job Matching using AI Integration"><i class="bx bx-plus"></i></a>
-                <a href="portfolio-details.html" title="More Details"><i class="bx bx-link"></i></a>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     </section><!-- End Portfolio Section -->
@@ -378,6 +353,7 @@
   <script src="assets/js/main.js"></script>
 
   <script>
+    var projects_data = [];
     $(document).ready(function(){
       fetchProjects();
     });
@@ -386,11 +362,40 @@
       fetch('assets/json/projects.json')
       .then(response => response.json()) // Parse the JSON response
       .then(data => {
-        console.log(data);
+        projectsPortfolio(data);
       })
       .catch(error => {
           console.error(error);
       });
+    }
+
+    function projectsPortfolio(projects){
+      $(".portfolio-container").html('');
+      projects_data = projects;
+      for (let projectIndex = 0; projectIndex < projects.length; projectIndex++) {
+        const project_row = projects[projectIndex];
+        $(".portfolio-container").append(`<div class="col-lg-4 col-md-6 portfolio-item filter-${project_row.type}">
+          <div class="portfolio-wrap">
+            <img src="assets/img/portfolio/${project_row.images.folder}/${project_row.images.main}" class="img-fluid" alt="">
+            <div class="portfolio-links">
+              <a href="assets/img/portfolio/${project_row.images.folder}/${project_row.images.cover}" data-gallery="portfolioGallery" class="portfolio-lightbox" title="${project_row.title}"><i class="bx bx-plus"></i></a>
+              <a href="#" title="More Details" onclick="viewProjectDetail(${projectIndex})"><i class="bx bx-link"></i></a>
+            </div>
+          </div>
+        </div>`);
+      }
+      const portfolioLightbox = GLightbox({
+        selector: '.portfolio-lightbox'
+      });
+    }
+
+    function viewProjectDetail(project_index){
+      // Serialize the object to a string
+      var serializedProject = JSON.stringify(projects_data[project_index]);
+
+      // Store the serialized object in local storage
+      localStorage.setItem('portfolio_project', serializedProject);
+      window.location = "portfolio-details.html";
     }
   </script>
 
